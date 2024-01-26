@@ -78,5 +78,17 @@ public class TransactionController {
           transactionService.list(keyword, size, page, isAll, tagId)
     );
   }
-
+  @GetMapping
+  public PageResponseGeneral<PageResponse<TransactionResponse>> list(
+        @RequestParam(name = "keyword", required = false) String keyword,
+        @RequestParam(name = "size", defaultValue = "10") int size,
+        @RequestParam(name = "page", defaultValue = "0") int page,
+        @RequestParam(name = "all", defaultValue = "false", required = false) boolean isAll,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    return PageResponseGeneral.ofSuccess(messageService.getMessage(LIST_TRANSACTION, language),
+          transactionService.listForAdmin(keyword, size, page, isAll)
+    );
+  }
 }

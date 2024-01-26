@@ -1,6 +1,7 @@
 package com.learn.SpendingManagement.repository.user;
 
 import com.learn.SpendingManagement.dto.response.User.AccountResponse;
+import com.learn.SpendingManagement.dto.response.User.LoginResponse;
 import com.learn.SpendingManagement.entity.user.Account;
 import com.learn.SpendingManagement.repository.BaseRepository;
 import org.springframework.data.domain.Page;
@@ -48,9 +49,18 @@ public interface AccountRepository extends BaseRepository<Account> {
         SELECT new com.learn.SpendingManagement.entity.user.Account
         (a.username, a.password, a.isActivated)
         FROM Account a
+        join User u on a.id = u.accountId
         WHERE a.username = :username AND a.isDeleted=false
         """)
   Account findByUsername(String username);
+  @Query("""
+        SELECT new com.learn.SpendingManagement.dto.response.User.LoginResponse
+        (a.username,u.id )
+        FROM Account a
+        join User u on a.id = u.accountId
+        WHERE a.username = :username AND a.isDeleted=false
+        """)
+  LoginResponse findDataLogin(String username);
 
   @Query("""
          SELECT CASE WHEN COUNT(a) > 0
@@ -71,7 +81,8 @@ public interface AccountRepository extends BaseRepository<Account> {
   @Modifying
   @Transactional
   @Query("UPDATE Account a SET a.isDeleted = true WHERE a.id = :id")
-  void deleteAccount(@Param("id") String id);
+  void deleteAccount(String id);
+
   @Modifying
   @Transactional
   @Query("UPDATE Account a SET a.isActivated = false WHERE a.id = :id")

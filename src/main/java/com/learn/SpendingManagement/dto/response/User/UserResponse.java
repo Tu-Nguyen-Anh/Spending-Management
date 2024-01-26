@@ -16,6 +16,14 @@ public class UserResponse {
   private AddressResponse addressResponse;
   private RoleResponse roleResponse;
 
+  public UserResponse(String id,
+                      String accountId, String username
+
+  ) {
+    this.id = id;
+    accountResponse = new AccountResponse(accountId, username);
+  }
+
   public UserResponse(String id, String email, String phone, String fullName) {
     this.id = id;
     this.email = email;

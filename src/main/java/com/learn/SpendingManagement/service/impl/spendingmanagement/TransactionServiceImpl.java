@@ -79,4 +79,13 @@ public class TransactionServiceImpl implements TransactionService {
     this.find(id);
     repository.delete(id);
   }
+
+  @Override
+  public PageResponse<TransactionResponse> listForAdmin(String keyword, int size, int page, boolean isAll) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    Page<TransactionResponse> pageResponse = isAll ?
+          repository.searchAllForAdmin(PageRequest.of(page, size)) :
+          repository.searchByKeyForAdmin(PageRequest.of(page, size), keyword);
+    return PageResponse.of(pageResponse.getContent(), pageResponse.getNumberOfElements());
+  }
 }

@@ -26,10 +26,10 @@ public interface UserRepository extends BaseRepository<User> {
         """)
   boolean checkMailExist(String email);
 
-  @Transactional
   @Modifying
+  @Transactional
   @Query("""
-        Update User u SET u.isDeleted= true where u.id=:id
+        update User u set u.isDeleted= true where u.id=:id
         """)
   void deleteUser(String id);
 
@@ -66,6 +66,7 @@ public interface UserRepository extends BaseRepository<User> {
         ORDER BY u.fullName
         """)
   UserResponse detail(String id);
+
   @Query("""
         SELECT new com.learn.SpendingManagement.dto.response.User.UserResponse
         (u.id,u.email,u.phone,u.fullName,

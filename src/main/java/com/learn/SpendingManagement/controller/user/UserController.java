@@ -57,17 +57,13 @@ public class UserController {
   }
 
   @DeleteMapping("{id}")
-  public ResponseGeneral<Void> delete(
+  public ResponseGeneral<UserResponse> delete(
         @PathVariable String id,
         @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
   ) {
-    log.info("(delete) request:{}", id);
     userService.delete(id);
-    return ResponseGeneral.ofSuccess(
-          messageService.getMessage(DELETE_USER, language)
-    );
+    return ResponseGeneral.ofSuccess(messageService.getMessage(DELETE_USER, language));
   }
-
   @GetMapping
   public PageResponseGeneral<PageResponse<UserResponse>> list(
         @RequestParam(name = "keyword", required = false) String keyword,

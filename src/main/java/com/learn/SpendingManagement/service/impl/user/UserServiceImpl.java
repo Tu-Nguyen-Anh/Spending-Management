@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public void delete(String id) {
-    this.find(id);
     log.info("(delete) request: {}", id);
+    this.find(id);
     repository.deleteUser(id);
   }
 

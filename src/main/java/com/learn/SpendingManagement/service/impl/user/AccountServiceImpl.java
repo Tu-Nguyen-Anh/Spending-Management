@@ -60,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
   @Override
   public void delete(String id) {
     log.info("(delete) id: {}", id);
-    this.checkAccountExist(id);
+    this.checkById(id);
     repository.deleteAccount(id);
   }
 
@@ -69,12 +69,16 @@ public class AccountServiceImpl implements AccountService {
     log.info("(login) request: {}", request);
 
     Account existingAccount = checkForLogin(request.getUsername());
-
+    LoginResponse loginResponse = findDataLogin(request.getUsername());
     if (checkPassword(request.getPassword(), existingAccount.getPassword())) {
-      return LoginResponse.of(existingAccount.getUsername());
+      return LoginResponse.of(loginResponse.getUsername(), loginResponse.getId());
     } else {
       throw new InvalidAccountException();
     }
+  }
+
+  private LoginResponse findDataLogin(String username) {
+    return repository.findDataLogin(username);
   }
 
   private Account checkForLogin(String username) {

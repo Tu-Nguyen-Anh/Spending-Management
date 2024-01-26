@@ -36,25 +36,32 @@ public interface TransactionRepository extends BaseRepository<Transaction> {
         """)
   Page<TransactionResponse> searchAll(PageRequest pageRequest, String tagId);
 
-//  @Query("""
-//          select new com.learn.SpendingManagement.dto.response.spendingmanagement.TransactionResponse
-//          (t.id,t.title,t.amount,t.description)
-//          FROM Transaction t
-//          WHERE(:keyword is null or
-//          (lower(t.title) LIKE lower(concat('%', :keyword, '%'))) or
-//          (lower(t.description) LIKE lower(concat('%', :keyword, '%')))
-//          and t.isDeleted = false)
-//        """)
-//  Page<TransactionResponse> searchByKey(PageRequest pageRequest, String keyword, String tagId);
-@Query("""
-                select new com.learn.SpendingManagement.dto.response.spendingmanagement.TransactionResponse
-                (t.id, t.title, t.amount, t.description)
-                FROM Transaction t
-      WHERE ((:keyword is null or :keyword = '') or
-        (lower(t.title) LIKE lower(concat('%', :keyword, '%'))) or
-        (lower(t.description) LIKE lower(concat('%', :keyword, '%')))
-      ) and (t.tagFinanceId = :tagId) and t.isDeleted = false
-            """)
-Page<TransactionResponse> searchByKey(PageRequest pageRequest, String keyword, String tagId);
+  @Query("""
+                  select new com.learn.SpendingManagement.dto.response.spendingmanagement.TransactionResponse
+                  (t.id, t.title, t.amount, t.description)
+                  FROM Transaction t
+        WHERE ((:keyword is null or :keyword = '') or
+          (lower(t.title) LIKE lower(concat('%', :keyword, '%'))) or
+          (lower(t.description) LIKE lower(concat('%', :keyword, '%')))
+        ) and (t.tagFinanceId = :tagId) and t.isDeleted = false
+              """)
+  Page<TransactionResponse> searchByKey(PageRequest pageRequest, String keyword, String tagId);
 
+  @Query("""
+                  select new com.learn.SpendingManagement.dto.response.spendingmanagement.TransactionResponse
+                  (t.id, t.title, t.amount, t.description)
+                  FROM Transaction t
+        WHERE ((:keyword is null or :keyword = '') or
+          (lower(t.title) LIKE lower(concat('%', :keyword, '%'))) or
+          (lower(t.description) LIKE lower(concat('%', :keyword, '%')))
+        ) and t.isDeleted = false
+              """)
+  Page<TransactionResponse> searchByKeyForAdmin(PageRequest pageRequest, String keyword);
+  @Query("""
+          select new com.learn.SpendingManagement.dto.response.spendingmanagement.TransactionResponse
+          (t.id,t.title,t.amount,t.description)
+          FROM Transaction t
+          where t.isDeleted= false
+        """)
+  Page<TransactionResponse> searchAllForAdmin(PageRequest pageRequest);
 }

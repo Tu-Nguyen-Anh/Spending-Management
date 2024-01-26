@@ -2,6 +2,8 @@ package com.learn.SpendingManagement.service.impl.spendingmanagement;
 
 import com.learn.SpendingManagement.dto.base.PageResponse;
 import com.learn.SpendingManagement.dto.request.spendingmanagement.TagFinanceRequest;
+import com.learn.SpendingManagement.dto.response.User.AccountResponse;
+import com.learn.SpendingManagement.dto.response.User.UserResponse;
 import com.learn.SpendingManagement.dto.response.spendingmanagement.TagFinanceResponse;
 import com.learn.SpendingManagement.entity.spendingmanagement.TagFinance;
 import com.learn.SpendingManagement.exception.spendingmanagement.TagFinanceAlreadyExistException;
@@ -78,6 +80,16 @@ public class TagFinanceServiceImpl implements TagFinanceService {
     );
   }
 
+  @Override
+  public PageResponse<TagFinanceResponse> listForAdmin(String keyword, int size, int page, boolean isAll) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    Page<TagFinanceResponse> pageResponse = isAll ?
+          repository.searchAllForAdmin(PageRequest.of(page, size)) :
+          repository.searchByKeyForAdmin(PageRequest.of(page, size), keyword);
+    return PageResponse.of(pageResponse.getContent(), pageResponse.getNumberOfElements());
+
+  }
+
   private TagFinance checkExistById(String id) {
     log.debug("(checkExistById): {}", id);
     TagFinance tagFinance = repository.findById(id).orElseThrow(TagFinanceNotFoundException::new);
@@ -108,5 +120,9 @@ public class TagFinanceServiceImpl implements TagFinanceService {
   private void setPropertyForUpdate(TagFinanceRequest request, TagFinance tagFinance) {
     tagFinance.setName(request.getName());
     tagFinance.setDescription(request.getDescription());
+  }
+
+  private UserResponse findByUsername(String id) {
+    return repository.findAllUsername(id);
   }
 }

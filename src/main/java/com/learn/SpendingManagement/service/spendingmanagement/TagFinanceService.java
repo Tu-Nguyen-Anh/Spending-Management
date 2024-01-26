@@ -14,4 +14,6 @@ public interface TagFinanceService {
   void delete(String id);
 
   TagFinanceResponse detail(String id);
+  PageResponse<TagFinanceResponse> listForAdmin(String keyword, int size, int page, boolean isAll);
+
 }

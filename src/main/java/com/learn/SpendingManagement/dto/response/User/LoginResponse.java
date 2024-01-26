@@ -11,4 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor(staticName = "of")
 public class LoginResponse {
   private String username;
+  private String id;
 }

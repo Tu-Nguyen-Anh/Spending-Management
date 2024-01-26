@@ -80,6 +80,19 @@ public class TagFinanceController {
           tagFinanceService.list(keyword, size, page, isAll, id)
     );
   }
+  @GetMapping
+  public PageResponseGeneral<PageResponse<TagFinanceResponse>> list(
+        @RequestParam(name = "keyword", required = false) String keyword,
+        @RequestParam(name = "size", defaultValue = "10") int size,
+        @RequestParam(name = "page", defaultValue = "0") int page,
+        @RequestParam(name = "all", defaultValue = "false", required = false) boolean isAll,
+        @RequestHeader(name = LANGUAGE, defaultValue = DEFAULT_LANGUAGE) String language
+  ) {
+    log.info("(list) keyword: {}, size : {}, page: {}, isAll: {}", keyword, size, page, isAll);
+    return PageResponseGeneral.ofSuccess(messageService.getMessage(LIST_TAG_FINANCE, language),
+          tagFinanceService.listForAdmin(keyword, size, page, isAll)
+    );
+  }
   @GetMapping("/details/{id}")
   public ResponseGeneral<TagFinanceResponse> detail(
         @PathVariable String id,

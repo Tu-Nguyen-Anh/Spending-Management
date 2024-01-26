@@ -12,4 +12,6 @@ public interface TransactionService {
   PageResponse<TransactionResponse> list(String keyword, int size, int page, boolean isAll, String tagId);
 
   void delete(String id);
+  PageResponse<TransactionResponse> listForAdmin(String keyword, int size, int page, boolean isAll);
+
 }
